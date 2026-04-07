@@ -1,5 +1,4 @@
 <configuration>
-    <!-- Пропагатор уровней: заставляет JUL слушаться настроек Logback -->
     <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
         <resetJUL>true</resetJUL>
     </contextListener>
@@ -10,7 +9,6 @@
         </encoder>
     </appender>
 
-    <!-- Уровень DEBUG в Logback соответствует Level.FINE в JUL -->
     <logger name="sdk.humus" level="DEBUG" />
 
     <root level="INFO">
