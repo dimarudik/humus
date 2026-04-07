@@ -33,7 +33,8 @@ public class ExecutionPlanPlugin implements ProxyPlugin {
             if (durationMs >= thresholdMs) {
                 String sql = extractSql(args);
 
-                if (result instanceof ResultSet rs) {
+                if (result instanceof ResultSet) {
+                    ResultSet rs = (ResultSet) result;
                     @SuppressWarnings("unchecked")
                     R wrappedResult = (R) new ResultSetWrapper(rs, () -> {
                         String executionPlan = captureExecutionPlan(target);
@@ -74,8 +75,8 @@ public class ExecutionPlanPlugin implements ProxyPlugin {
     }
 
     private Connection extractConnection(Object target) throws SQLException {
-        if (target instanceof Connection c) return c;
-        if (target instanceof Statement s) return s.getConnection();
+        if (target instanceof Connection) return (Connection) target;
+        if (target instanceof Statement) return ((Statement) target).getConnection();
         throw new SQLException("Could not extract native Connection from " + target.getClass());
     }
 
