@@ -1,0 +1,3 @@
+sdk.humus.plugins.discovery.DiscoveryPluginFactory
+sdk.humus.plugins.executiontime.ExecutionTimePluginFactory
+sdk.humus.plugins.executionplan.ExecutionPlanPluginFactory

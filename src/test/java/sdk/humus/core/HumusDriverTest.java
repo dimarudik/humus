@@ -1,0 +1,85 @@
+package sdk.humus.core;
+
+import dev.humus.discovery.*;
+import io.grpc.Server;
+import io.grpc.ServerBuilder;
+import io.grpc.stub.StreamObserver;
+import java.sql.*;
+import java.util.Properties;
+import java.util.concurrent.atomic.AtomicInteger;
+import org.junit.jupiter.api.*;
+import org.slf4j.bridge.SLF4JBridgeHandler;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import sdk.humus.plugins.discovery.DiscoveryPlugin;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@Testcontainers
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+public class HumusDriverTest {
+    @Container
+    @Deprecated
+    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres")
+            .withDatabaseName("humus_db")
+            .withUsername("user")
+            .withPassword("pass");
+
+    private static Server grpcServer;
+    private static final AtomicInteger discoveryCalls = new AtomicInteger(0);
+    private static final int GRPC_PORT = 9091;
+
+    @BeforeAll
+    static void setup() throws Exception {
+        SLF4JBridgeHandler.removeHandlersForRootLogger();
+        SLF4JBridgeHandler.install();
+        java.util.logging.Logger.getLogger("").setLevel(java.util.logging.Level.FINEST);
+
+        grpcServer = ServerBuilder.forPort(GRPC_PORT)
+                .addService(new DatabaseDiscoveryServiceGrpc.DatabaseDiscoveryServiceImplBase() {
+                    @Override
+                    public void getDatabaseInstance(DiscoveryRequest req, StreamObserver<DiscoveryResponse> obs) {
+                        discoveryCalls.incrementAndGet();
+                        obs.onNext(DiscoveryResponse.newBuilder()
+                                .setHost(postgres.getHost())
+                                .setPort(postgres.getMappedPort(5432))
+                                .setInstanceType(InstanceType.MASTER)
+                                .build());
+                        obs.onCompleted();
+                    }
+                })
+                .build()
+                .start();
+    }
+
+    @AfterAll
+    static void tearDown() {
+        if (grpcServer != null) grpcServer.shutdownNow();
+    }
+
+    @BeforeEach
+    void init() {
+        DiscoveryPlugin.clearCache();
+        discoveryCalls.set(0);
+    }
+
+    @Test
+    @DisplayName("Check that cached hosts are used")
+    void testDiscoveryCaching() throws Exception {
+        String url = "jdbc:humus:grpc://localhost:" + GRPC_PORT + "/humus_db";
+        Properties props = new Properties();
+        props.setProperty("user", "user");
+        props.setProperty("password", "pass");
+
+        try (Connection conn1 = DriverManager.getConnection(url, props)) {
+            assertNotNull(conn1);
+        }
+
+        try (Connection conn2 = DriverManager.getConnection(url, props)) {
+            assertNotNull(conn2);
+        }
+
+        assertEquals(1, discoveryCalls.get(), "gRPC Discovery должен был вызваться ровно 1 раз");
+    }
+}
