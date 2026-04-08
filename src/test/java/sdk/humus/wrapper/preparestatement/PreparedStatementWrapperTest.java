@@ -3,6 +3,11 @@ package sdk.humus.wrapper.preparestatement;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.Properties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,12 +17,6 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import sdk.humus.plugins.executiontime.ExecutionTimePlugin;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -100,6 +99,9 @@ public class PreparedStatementWrapperTest {
                 .anyMatch(event -> event.getFormattedMessage().contains(expectedPrefix)
                         && event.getFormattedMessage().contains(sqlSnippet));
 
-        assertTrue(found, "The log doesn't contain the expected message for " + actionDescription + " with SQL snippet: " + actionDescription + ". Expected SQL: " + sqlSnippet);
+        assertTrue(
+                found,
+                "The log doesn't contain the expected message for " + actionDescription + " with SQL snippet: "
+                        + actionDescription + ". Expected SQL: " + sqlSnippet);
     }
 }
