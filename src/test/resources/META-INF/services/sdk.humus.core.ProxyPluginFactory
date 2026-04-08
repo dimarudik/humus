@@ -1,4 +1,4 @@
 sdk.humus.plugins.discovery.DiscoveryPluginFactory
-sdk.humus.spi.simple.CustomSpiPluginFactory
+sdk.humus.spi.simple.BublikPluginFactory
 sdk.humus.spi.pluginorder.HighPriorityFactory
 sdk.humus.spi.pluginorder.LowPriorityFactory

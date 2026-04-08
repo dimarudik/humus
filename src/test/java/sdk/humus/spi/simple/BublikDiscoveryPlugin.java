@@ -7,13 +7,13 @@ import org.slf4j.LoggerFactory;
 import sdk.humus.core.JdbcCallable;
 import sdk.humus.core.ProxyPlugin;
 
-public class CustomSpiDiscoveryPlugin implements ProxyPlugin {
-    private static final Logger log = LoggerFactory.getLogger(CustomSpiDiscoveryPlugin.class);
+public class BublikDiscoveryPlugin implements ProxyPlugin {
+    private static final Logger log = LoggerFactory.getLogger(BublikDiscoveryPlugin.class);
     private final String mockHost;
     private final int mockPort;
     private static final int PRIORITY = 100;
 
-    public CustomSpiDiscoveryPlugin(String host, int port) {
+    public BublikDiscoveryPlugin(String host, int port) {
         this.mockHost = host;
         this.mockPort = port;
     }

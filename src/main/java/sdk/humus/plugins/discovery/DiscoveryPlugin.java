@@ -54,7 +54,8 @@ public class DiscoveryPlugin implements ProxyPlugin {
         ManagedChannel channel =
                 ManagedChannelBuilder.forTarget(discoveryAddr).usePlaintext().build();
         try {
-            DatabaseDiscoveryServiceGrpc.DatabaseDiscoveryServiceBlockingStub stub = DatabaseDiscoveryServiceGrpc.newBlockingStub(channel);
+            DatabaseDiscoveryServiceGrpc.DatabaseDiscoveryServiceBlockingStub stub =
+                    DatabaseDiscoveryServiceGrpc.newBlockingStub(channel);
             return stub.withDeadlineAfter(5, TimeUnit.SECONDS)
                     .getDatabaseInstance(DiscoveryRequest.newBuilder()
                             .setServiceName(dbClusterName)

@@ -7,7 +7,7 @@ import sdk.humus.HumusDriver;
  * Интерфейс фабрики для создания экземпляров {@link ProxyPlugin}.
  * <p>
  * Реализации этого интерфейса должны быть зарегистрированы в файле
- * {@code META-INF/services/dev.humus.core.ProxyPluginFactory} для автоматического
+ * {@code META-INF/services/sdk.humus.core.ProxyPluginFactory} для автоматического
  * обнаружения механизмом Java SPI (Service Provider Interface).
  * </p>
  *

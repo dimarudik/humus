@@ -41,7 +41,7 @@ public class HumusSpringSpiTest {
         System.setProperty("test.postgres.host", postgres.getHost());
         System.setProperty("test.postgres.port", String.valueOf(postgres.getMappedPort(5432)));
 
-        registry.add("spring.datasource.url", () -> "jdbc:humus:custom-spi://mock-host:0/spring_spi_db");
+        registry.add("spring.datasource.url", () -> "jdbc:humus:bublik://mock-host:0/spring_spi_db");
         registry.add("spring.datasource.driver-class-name", () -> "sdk.humus.HumusDriver");
         registry.add("spring.datasource.username", () -> "user");
         registry.add("spring.datasource.password", () -> "pass");

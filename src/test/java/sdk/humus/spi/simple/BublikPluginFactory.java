@@ -5,14 +5,14 @@ import org.jspecify.annotations.NonNull;
 import sdk.humus.core.ProxyPlugin;
 import sdk.humus.core.ProxyPluginFactory;
 
-public class CustomSpiPluginFactory implements ProxyPluginFactory {
+public class BublikPluginFactory implements ProxyPluginFactory {
     @Override
     public ProxyPlugin create(@NonNull String url, Properties info) {
-        if (url.startsWith("jdbc:humus:custom-spi://")) {
+        if (url.startsWith("jdbc:humus:bublik://")) {
             String host = System.getProperty("test.postgres.host", "127.0.0.1");
             int port = Integer.parseInt(System.getProperty("test.postgres.port", "5432"));
 
-            return new CustomSpiDiscoveryPlugin(host, port);
+            return new BublikDiscoveryPlugin(host, port);
         }
         return null;
     }

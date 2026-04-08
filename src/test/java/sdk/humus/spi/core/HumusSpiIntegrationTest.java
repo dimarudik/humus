@@ -39,7 +39,7 @@ public class HumusSpiIntegrationTest {
     void shouldLoadCustomPluginViaSpi() throws Exception {
         Class.forName("sdk.humus.HumusDriver");
 
-        String customUrl = "jdbc:humus:custom-spi://ignored-host:0/spi_db";
+        String customUrl = "jdbc:humus:bublik://ignored-host:0/spi_db";
 
         Properties props = new Properties();
         props.setProperty("user", "user");
