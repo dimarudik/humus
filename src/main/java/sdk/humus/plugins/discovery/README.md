@@ -1,21 +1,21 @@
-## DiscoveryPlugin (gRPC)
+## 🚀 DiscoveryPlugin (gRPC)
 Позволяет динамически разрешать адрес базы данных через внешний сервис.<br>
 Для активации плагина DiscoveryPlugin необходимо указать в JDBC URL префикс `jdbc:humus:grpc` и указать адрес gRPC-сервиса.
 
 - **URL формат:** `jdbc:humus:grpc://discovery-service:9090/db_name`
 
-### Параметры & фильтры:
+### 🛠 Параметры & фильтры:
 - **humus.instance** - имя кластера (обязательное поле)
 - **humus.wl_type** - тип нагрузки: ro - только чтение, rw - чтение-запись. (default: rw)
 - **humus.reg_db** - список регионов, в которых находятся хосты кластера PostgreSQL. (default: все регионы) 
 - **humus.reg_app** - регион, в котором находится хост приложения. В формируемом uri вперед будут отдаваться хосты кластера ближайших регионов.
 
-#### Логика фильтров: 
+#### ✔ Логика фильтров: 
 
 `(humus.wl_type AND humus.reg_db) OR humus.reg_app` 
 
 
-#### Топология кластера PostgreSQL:
+#### ✔ Топология кластера PostgreSQL:
 
 Для простоты понимая, все регионы стоят на одной географической линии в порядке R0, R1, R2.
 
@@ -34,7 +34,7 @@
   </tr>
 </table>
 
-#### Формируемый JDBC URL:
+#### ✔ Формируемый JDBC URL:
 <table style="font-family: 'Courier New', monospace;">
   <tr style="text-align: center; vertical-align: middle;">
     <th>wl_type</th>
